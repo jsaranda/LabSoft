@@ -1,3 +1,15 @@
+# Portal LABSOFT
+
+![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-6.0-092E20?logo=django&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?logo=bootstrap&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-dev-003B57?logo=sqlite&logoColor=white)
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+![IFRS](https://img.shields.io/badge/IFRS-Campus%20Veran%C3%B3polis-1e5b3f)
+
+![Último commit](https://img.shields.io/github/last-commit/jsaranda/LabSoft)
+![Tamanho](https://img.shields.io/github/repo-size/jsaranda/LabSoft)
+
 # Tutorial — Portal LABSOFT e Módulo FestVer (Django)
 
 **LABSOFT — Laboratório de Desenvolvimento de Software — IFRS Campus Veranópolis**
