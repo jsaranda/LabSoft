@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block titulo %}FestVer — Eventos{% endblock %}
+
+{% block conteudo %}
+    <a href="{% url 'home' %}" class="btn btn-link btn-sm text-decoration-none px-0 mb-2">← Portal LABSOFT</a>
+    <h1 class="mb-4">FestVer — Eventos</h1>
+
+    <div class="row">
+        {% for evento in eventos %}
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ evento.nome }}</h5>
+                        <p class="card-text text-muted">{{ evento.descricao|truncatewords:20 }}</p>
+                        {% if evento.inscricoes_abertas %}
+                            <span class="badge bg-success mb-2">Inscrições abertas</span>
+                        {% endif %}
+                        {% if evento.votacao_aberta %}
+                            <span class="badge bg-primary mb-2">Votação aberta</span>
+                        {% endif %}
+                        <div>
+                            <a href="{% url 'festver:detalhe_evento' evento.id %}" class="btn btn-sm btn-outline-success">Ver evento</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Nenhum evento cadastrado ainda.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

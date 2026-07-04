@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Avaliar — {{ inscricao.titulo_obra }}{% endblock %}
+
+{% block conteudo %}
+<a href="{% url 'festver:detalhe_evento' inscricao.categoria.evento.id %}" class="btn btn-link btn-sm text-decoration-none px-0 mb-2">← Voltar ao evento</a>
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-header fw-bold">Avaliar: {{ inscricao.titulo_obra }}</div>
+                <div class="card-body">
+                    <p class="text-muted">
+                        Categoria: {{ inscricao.categoria.nome }} —
+                        Participante: {{ inscricao.participante.first_name|default:inscricao.participante.username }}
+                    </p>
+                    <p><a href="{{ inscricao.arquivo_obra.url }}" target="_blank" class="btn btn-sm btn-outline-secondary">📎 Ver obra enviada</a></p>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for linha in linhas %}
+                            <div class="mb-3">
+                                <label class="form-label" for="nota_{{ linha.criterio.id }}">{{ linha.criterio.nome }}</label>
+                                <input type="number" class="form-control" name="nota_{{ linha.criterio.id }}"
+                                       id="nota_{{ linha.criterio.id }}"
+                                       min="0" max="10" step="0.1"
+                                       value="{{ linha.nota }}" required>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Salvar notas</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

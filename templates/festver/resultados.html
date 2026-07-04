@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Resultados — {{ evento.nome }}{% endblock %}
+
+{% block conteudo %}
+    <a href="{% url 'festver:detalhe_evento' evento.id %}" class="btn btn-link btn-sm text-decoration-none px-0 mb-2">← Voltar ao evento</a>
+    <h1 class="mb-4">🏆 Resultados — {{ evento.nome }}</h1>
+
+    {% for bloco in quadro %}
+        <h2 class="mt-4">{{ bloco.categoria.nome }}</h2>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header fw-bold">Júri técnico</div>
+                    <ol class="list-group list-group-numbered list-group-flush">
+                        {% for inscricao in bloco.ranking_juri %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center {% if forloop.first %}fw-bold{% endif %}">
+                                <span>
+                                    {% if forloop.first %}🥇{% elif forloop.counter == 2 %}🥈{% elif forloop.counter == 3 %}🥉{% endif %}
+                                    {{ inscricao.titulo_obra }}
+                                    <small class="text-muted">— {{ inscricao.participante.first_name|default:inscricao.participante.username }}</small>
+                                </span>
+                                {% if inscricao.media_juri is not None %}
+                                    <span class="badge bg-primary rounded-pill">{{ inscricao.media_juri|floatformat:2 }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary rounded-pill">sem notas</span>
+                                {% endif %}
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item text-muted">Nenhuma obra homologada.</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header fw-bold">Voto popular</div>
+                    <ol class="list-group list-group-numbered list-group-flush">
+                        {% for inscricao in bloco.ranking_popular %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center {% if forloop.first %}fw-bold{% endif %}">
+                                <span>
+                                    {% if forloop.first %}🥇{% elif forloop.counter == 2 %}🥈{% elif forloop.counter == 3 %}🥉{% endif %}
+                                    {{ inscricao.titulo_obra }}
+                                    <small class="text-muted">— {{ inscricao.participante.first_name|default:inscricao.participante.username }}</small>
+                                </span>
+                                <span class="badge bg-success rounded-pill">{{ inscricao.total_votos_populares }} voto{{ inscricao.total_votos_populares|pluralize }}</span>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item text-muted">Nenhuma obra homologada.</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

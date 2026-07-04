@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block titulo %}{{ evento.nome }}{% endblock %}
+
+{% block conteudo %}
+<a href="{% url 'festver:lista_eventos' %}" class="btn btn-link btn-sm text-decoration-none px-0 mb-2">← Todos os eventos</a>
+    <h1>{{ evento.nome }}</h1>
+    <p class="text-muted">{{ evento.descricao }}</p>
+
+    <div class="mb-4">
+        {% if evento.inscricoes_abertas %}
+            <a href="{% url 'festver:inscrever' evento.id %}" class="btn btn-success">➜ Inscreva sua obra</a>
+        {% endif %}
+        {% if evento.resultados_publicados %}
+            <a href="{% url 'festver:resultados' evento.id %}" class="btn btn-warning">🏆 Ver resultados</a>
+        {% endif %}
+    </div>
+
+    {% for categoria in evento.categorias.all %}
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header fw-bold">{{ categoria.nome }}</div>
+            <ul class="list-group list-group-flush">
+                {% for inscricao in categoria.inscricoes.all %}
+                    {% if inscricao.status == 'HOM' %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>
+                                {{ inscricao.titulo_obra }}
+                                <small class="text-muted">— {{ inscricao.participante.first_name|default:inscricao.participante.username }}</small>
+                            </span>
+                            <span class="d-flex gap-2">
+                                {% if user in evento.jurados.all and evento.votacao_aberta %}
+                                    <a href="{% url 'festver:avaliar' inscricao.id %}" class="btn btn-sm btn-outline-primary">Avaliar</a>
+                                {% endif %}
+                                {% if user.is_authenticated and evento.votacao_aberta %}
+                                    <form method="post" action="{% url 'festver:votar' inscricao.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-primary">🗳 Votar</button>
+                                    </form>
+                                {% endif %}
+                            </span>
+                        </li>
+                    {% endif %}
+                {% empty %}
+                    <li class="list-group-item text-muted">Nenhuma inscrição nesta categoria.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+{% endblock %}
